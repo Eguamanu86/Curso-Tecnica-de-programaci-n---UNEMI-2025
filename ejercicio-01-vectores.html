@@ -1,0 +1,24 @@
+<script>
+let vectorPrecios = []; // definir arreglo
+let precio = 0;
+
+// Almacenar precio en el Vector
+for(let i = 0; i < 6 ; i ++){
+    precio = prompt('Ingrese precio del producto ['+ i +']:' );
+    vectorPrecios[i] = parseFloat(precio);
+    console.log(vectorPrecios);
+}
+
+// Presentar valores del Vector.
+for(let i = 0; i < 6 ; i ++){
+    document.write('['+ i +']=', vectorPrecios[i], '<br>')
+}
+
+// Calcular valor total de los precios de productos.
+let total = 0;
+for(let i = 0; i < 6 ; i ++){
+    total = total + vectorPrecios[i] // Acumulador
+}
+document.write('Total de precios de los productos: ', total)
+
+</script>
