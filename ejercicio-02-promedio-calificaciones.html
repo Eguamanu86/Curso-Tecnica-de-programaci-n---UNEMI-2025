@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promedio de calificaciones</title>
+</head>
+<body>
+
+     <table border="1">
+        <thead>
+            <tr>
+                <th colspan="4">Promedio de calificaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Ingrese la Nota: </td>
+                <td><input type="number" id="id-txt-nota"></td>
+                <td><button id="id-btn-agregar">Agregar</button></td>
+                <td><button id="id-btn-presentar">Presentar</button></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <span id="id-mostrar-notas">Mostrar notas.. </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="id-btn-calcular-promedio">Calcular Promedio</button>
+                </td>
+                <td colspan="3">
+                     <span id="id-mostrar-promedio">0.00</span>
+                </td>
+            </tr>
+        </tbody>
+     </table>
+
+    <script>
+        const vectorNotas = []
+        const LIMITE_NOTAS = 5
+        let contador = 0
+
+        const txtNota = document.getElementById("id-txt-nota");
+        const btnAgregar = document.getElementById("id-btn-agregar");
+        const btnPresentar = document.getElementById("id-btn-presentar");
+        const mostrarNotas = document.getElementById("id-mostrar-notas");
+
+        const btnCalcularPromedio = document.getElementById("id-btn-calcular-promedio");
+        const mostrarPromedio = document.getElementById("id-mostrar-promedio");
+
+        // Agregar evento click
+        btnAgregar.addEventListener("click",()=>{
+            if (contador < LIMITE_NOTAS) {
+                // Extreamos la nota de la caja de texto
+                const nota = parseFloat(txtNota.value);
+                // Almacenar las notas en el vector.
+                vectorNotas.push(nota);
+                txtNota.value = '';
+                contador ++;
+
+                console.log(vectorNotas);
+            }
+            else{
+                alert("El limite de notas a ingresar son: " + LIMITE_NOTAS )
+            }
+        });
+
+
+        btnPresentar.addEventListener('click',()=>{
+            mostrarNotas.innerHTML = vectorNotas.join('; ')
+        });
+
+
+        btnCalcularPromedio.addEventListener('click', ()=>{
+            let promedio = 0;
+            let suma = 0
+
+            for(let i = 0; i < vectorNotas.length; i++){
+                suma = suma + vectorNotas[i];
+            }
+            promedio = suma/vectorNotas.length;
+            mostrarPromedio.innerHTML = promedio;
+        });
+
+    </script>
+</body>
+</html>
