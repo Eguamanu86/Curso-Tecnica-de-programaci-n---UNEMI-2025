@@ -28,21 +28,56 @@
         </tr>
         <tr>
             <td colspan="2">
+                <table border="1">
+                <thead>
+                    <tr>
+                        <th>Precio</th>
+                        <th>Productos</th>
+                    </tr>
+                </thead>
+                <tbody id="id-tbody-pedidos">
+                    <tr>
+                        <td colspan="2" width="200">No hay productos..</td>
+                    </tr>
+                </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <button id="btn-calcular-total">Calcular Total</button>
             </td>
+             <td>
+                <button id="btn-producto-mas-vendido">Productos más Vendido</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Total de productos:</td>
+            <td><input type="text" value="0" id="id-txt-cantidad-productos" readonly></td>
         </tr>
         <tr>
             <td>Total a Pagar:</td>
             <td><input type="text" value="0.00" id="id-txt-total" readonly></td>
+        </tr>
+        <tr>
+            <td>Productos más vendido:</td>
+            <td><input type="text" id="id-txt-producto-mas-vendido" readonly placeholder="el más vendido"></td>
         </tr>
     </tbody>
     <tfoot></tfoot>
 </table>
 <script>
     let pedidos = []
+    //
     const selectMenuProductos = document.getElementById('id-select-menu-productos')
     const btnCalcularTotal = document.getElementById('btn-calcular-total')
+    const btnProductoMasVendido = document.getElementById('btn-producto-mas-vendido')
     const txtTotalPagar = document.getElementById('id-txt-total')
+
+    const tbodyPedidos = document.getElementById('id-tbody-pedidos')
+    const cantidadProductos = document.getElementById('id-txt-cantidad-productos')
+    const txtProductoMasVendido = document.getElementById('id-txt-producto-mas-vendido')
+
 
     selectMenuProductos.addEventListener('change', (event)=>{
         const precio = parseFloat(event.target.value)
@@ -51,13 +86,17 @@
         // almacenar datos al vector
         pedidos.push([precio,producto])
         console.log(pedidos)
-
+        presentarProductos()
+        cantidadProductos.value = pedidos.length
     })
-
 
     btnCalcularTotal.addEventListener('click', ()=>{
         const totalPagar = fnCalcularTotalPagar()
         txtTotalPagar.value = totalPagar.toFixed(2)
+    })
+
+    btnProductoMasVendido.addEventListener('click', ()=>{
+        txtProductoMasVendido.value = productoMasVendido()
     })
 
     function fnCalcularTotalPagar(){
@@ -69,6 +108,47 @@
         }
 
         return total
+    }
+
+    function presentarProductos(){
+        let tr = ''
+        for(let i=0; i < pedidos.length ; i++){
+            const pedido = pedidos[i]
+            // tomamos valores
+            const precio = pedido[0]
+            const producto = pedido[1]
+            tr += '<tr>'
+            tr += '<td>' + precio + '</td>'
+            tr += '<td>' + producto + '</td>'
+            tr += '</tr>'
+        }
+        tbodyPedidos.innerHTML = tr
+    }
+
+    function productoMasVendido(){
+        let conteo = {}
+        let masVendido = ''
+        let mayor = 0
+        // Logica del producto mas vendido
+         for(let i=0; i < pedidos.length ; i++){
+            // extraer un elemento del ventor
+            const pedido = pedidos[i]
+            const producto = pedido[1]
+            // Creamos la estructura { "producto1" : conteo, "producto2" : conteo, ....}
+            conteo[producto] = (conteo[producto] || 0) + 1
+         }
+         console.log(conteo)
+
+         // Detenerminar el valor mayor de la estructura Conteo {}
+         for(const producto in conteo){
+            let c = conteo[producto]
+            if (c > mayor){
+                mayor = c
+                masVendido = producto
+            }
+         }
+
+        return masVendido
     }
 
 </script>
