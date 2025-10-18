@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria</title>
+</head>
+<body>
+<table>
+    <thead>
+        <tr>
+            <th colspan="2">Cafetería con vectores</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Seleccione: </td>
+            <td>
+                <select id="id-select-menu-productos">
+                    <option value="0">-------</option>
+                    <option value="2">Café americano: $2</option>
+                    <option value="3">Cappuccino: $3</option>
+                    <option value="4">Sánduche de pollo: $4</option>
+                    <option value="3.5">Cheesecake: $3.5</option>
+                    <option value="2.5">Jugo natural: $2.5</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button id="btn-calcular-total">Calcular Total</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Total a Pagar:</td>
+            <td><input type="text" value="0.00" id="id-txt-total" readonly></td>
+        </tr>
+    </tbody>
+    <tfoot></tfoot>
+</table>
+<script>
+    let pedidos = []
+    const selectMenuProductos = document.getElementById('id-select-menu-productos')
+    const btnCalcularTotal = document.getElementById('btn-calcular-total')
+    const txtTotalPagar = document.getElementById('id-txt-total')
+
+    selectMenuProductos.addEventListener('change', (event)=>{
+        const precio = parseFloat(event.target.value)
+        const producto = event.target.options[event.target.selectedIndex].text
+
+        // almacenar datos al vector
+        pedidos.push([precio,producto])
+        console.log(pedidos)
+
+    })
+
+
+    btnCalcularTotal.addEventListener('click', ()=>{
+        const totalPagar = fnCalcularTotalPagar()
+        txtTotalPagar.value = totalPagar.toFixed(2)
+    })
+
+    function fnCalcularTotalPagar(){
+        let total = 0
+
+        for(let i=0; i < pedidos.length ; i++){
+            const pedido = pedidos[i]
+            total = total + pedido[0]
+        }
+
+        return total
+    }
+
+</script>
+</body>
+</html>

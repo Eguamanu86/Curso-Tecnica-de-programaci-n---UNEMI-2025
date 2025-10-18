@@ -83,6 +83,10 @@
                 <td colspan="5"><button id="btn-cargar-vector">Cargar Vector</button></td>
                 <td colspan="5"><button id="btn-vaciar-vector">Vaciar Vector</button></td>
             </tr>
+            <tr>
+                <td colspan="5"><button id="btn-numero-mayor">Numero Mayor</button></td>
+                <td colspan="5"><button id="btn-numero-menor">Numero Menor</button></td>
+            </tr>
         </tfoot>
     </table>
     <hr>
@@ -109,6 +113,7 @@
         const tableTbody = document.querySelector('#id-table-vector-numerico > tbody')
         const btnCargarVector = document.getElementById("btn-cargar-vector")
         const btnVaciarVector = document.getElementById("btn-vaciar-vector")
+        const btnNumeroMayor = document.getElementById("btn-numero-mayor")
         // Opcional en caso de calculos con vectores y mostrar resultados.
         const txtRespuesta = document.getElementById("id-txt-respuesta")
         const selectDimension = document.getElementById("select-dimension-arreglo")
@@ -159,6 +164,26 @@
         function fnVaciarVector() {
             vector = []
         }
+
+
+        btnNumeroMayor.addEventListener('click',(event)=>{
+            txtRespuesta.value = numeroMayor()
+        })
+
+
+        function numeroMayor(){
+            let mayor = vector[0]
+
+            for(let i=1 ; i < vector.length; i++){
+                if(vector[i] > mayor){
+                    mayor = vector[i]
+                }
+            }
+
+            return mayor
+        }
+
+
 
     </script>
 </body>
