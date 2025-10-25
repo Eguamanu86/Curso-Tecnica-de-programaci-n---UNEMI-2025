@@ -87,6 +87,19 @@
                 <td colspan="5"><button id="btn-numero-mayor">Numero Mayor</button></td>
                 <td colspan="5"><button id="btn-numero-menor">Numero Menor</button></td>
             </tr>
+            <tr>
+                <td colspan="5"><button id="btn-sumar-valores">Suma de Valores</button></td>
+                <td colspan="5"><button id="btn-producto-vector">Producto de Valores</button></td>
+            </tr>
+             <tr>
+                <td colspan="5">
+                    <button id="btn-calcular-moda">Moda</button>
+                </td>
+                <td colspan="5">
+                    <button id="btn-calcular-media">Media</button>
+                    <button id="btn-calcular-mediana">Mediana</button>
+                </td>
+            </tr>
         </tfoot>
     </table>
     <hr>
@@ -111,9 +124,22 @@
 
         // Referencia a elementos del DOM/HTML -> controles.
         const tableTbody = document.querySelector('#id-table-vector-numerico > tbody')
+
         const btnCargarVector = document.getElementById("btn-cargar-vector")
         const btnVaciarVector = document.getElementById("btn-vaciar-vector")
+
         const btnNumeroMayor = document.getElementById("btn-numero-mayor")
+        const btnNumeroMenor = document.getElementById("btn-numero-menor")
+
+        // Botones para operaciones  suma y producto
+        const btnSumarValores = document.getElementById("btn-sumar-valores")
+        const btnProductoValores = document.getElementById("btn-producto-vector")
+
+        // Botones para calculos estadisticos
+        const btnCalcularModa = document.getElementById("btn-calcular-moda")
+        const btnCalcularMedia = document.getElementById("btn-calcular-media")
+        const btnCalcularMediana = document.getElementById("btn-calcular-mediana")
+
         // Opcional en caso de calculos con vectores y mostrar resultados.
         const txtRespuesta = document.getElementById("id-txt-respuesta")
         const selectDimension = document.getElementById("select-dimension-arreglo")
@@ -165,11 +191,15 @@
             vector = []
         }
 
+        // Obtener numero mayor y menor
 
         btnNumeroMayor.addEventListener('click',(event)=>{
             txtRespuesta.value = numeroMayor()
         })
 
+        btnNumeroMenor.addEventListener('click',(event)=>{
+            txtRespuesta.value = numeroMenor()
+        })
 
         function numeroMayor(){
             let mayor = vector[0]
@@ -183,7 +213,121 @@
             return mayor
         }
 
+        function numeroMenor(){
+            let menor = vector[0]
 
+            for(let i=1 ; i < vector.length; i++){
+                if(vector[i] < menor){
+                    menor = vector[i]
+                }
+            }
+
+            return menor
+        }
+
+
+        // Sumar y Producto del valores del vector
+
+        btnSumarValores.addEventListener('click',(event)=>{
+            txtRespuesta.value = fnSumarValores()
+        })
+
+        btnProductoValores.addEventListener('click',(event)=>{
+            txtRespuesta.value = fnProductoVectores()
+        })
+
+        function fnSumarValores() {
+            let suma = 0
+            for (let i = 0; i < vector.length; i++) {
+                suma = suma + vector[i]
+            }
+            return suma
+        }
+
+        function fnProductoVectores() {
+            let producto = 1
+            for (let i = 0; i < vector.length; i++) {
+                producto = producto * vector[i]
+            }
+            return producto
+        }
+
+        // Calculos estadisticos: Moda, Media, Mediana
+        btnCalcularModa.addEventListener('click',(event)=>{
+            const copiaVector = [...vector] // crear una copia del vector original
+            txtRespuesta.value = fnCalcularModa(copiaVector)
+        })
+
+        btnCalcularMedia.addEventListener('click',(event)=>{
+            txtRespuesta.value = fnCalcularMedia()
+        })
+
+        btnCalcularMediana.addEventListener('click',(event)=>{
+            const copiaVector = [...vector] // crear una copia del vector original
+            txtRespuesta.value = fnCalcularMediana(copiaVector)
+        })
+
+
+        function fnCalcularModa(copiaVector) {
+            let frecuencias = []
+            for (let i in copiaVector) {
+                const numero = copiaVector[i]
+                // calcular frecuencia de ese numero
+                frecuencias[i] = calcularFrecuencia(numero, copiaVector)
+            }
+            // obtener la posicion del numero con mayor frecuencia
+            const posicionModa = obtenerPosicionFrecuenciaMayor(frecuencias)
+            const moda = copiaVector[posicionModa]
+            return moda
+        }
+
+
+        function calcularFrecuencia(numero, copiaVector) {
+            let numVeces = 0
+            for (let i in copiaVector) {
+                if (copiaVector[i] === numero) {
+                    numVeces++
+                }
+            }
+            return numVeces
+        }
+
+        function obtenerPosicionFrecuenciaMayor(frecuencias) {
+            let posMayor = 0
+            let numMayor = frecuencias[0]
+            for (let i in frecuencias) {
+                if (frecuencias[i] > numMayor) {
+                    numMayor = frecuencias[i]
+                    posMayor = i
+                }
+            }
+            return posMayor
+        }
+
+        function fnCalcularMedia(){
+            let suma = fnSumarValores()
+            let media = suma / vector.length
+            return media
+        }
+
+        function fnCalcularMediana(copiaVector){
+            let mediana = 0
+            copiaVector.sort((a, b) => a - b) // ordenar el vector de menor a mayor
+            const dimensiones = copiaVector.length // Longitud del vector
+
+            // Verificar si la dimension es par o impar
+            if (dimensiones % 2 === 0) {
+                // Si es par
+                let posicionCentral = dimensiones / 2
+                mediana = (copiaVector[posicionCentral - 1] + copiaVector[posicionCentral]) / 2
+            } else {
+                // Si es impar
+                let posicionCentral = parseInt((dimensiones - 1) / 2)
+                mediana = copiaVector[posicionCentral]
+            }
+
+            return mediana
+        }
 
     </script>
 </body>
