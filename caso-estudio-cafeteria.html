@@ -96,7 +96,7 @@
     })
 
     btnProductoMasVendido.addEventListener('click', ()=>{
-        txtProductoMasVendido.value = productoMasVendido()
+        txtProductoMasVendido.value = productoMasVendidoV2()
     })
 
     function fnCalcularTotalPagar(){
@@ -125,7 +125,7 @@
         tbodyPedidos.innerHTML = tr
     }
 
-    function productoMasVendido(){
+    function productoMasVendidoV1(){
         let conteo = {}
         let masVendido = ''
         let mayor = 0
@@ -151,6 +151,19 @@
         return masVendido
     }
 
+    function productoMasVendidoV2(){
+        let masVendido = ''
+        let conteoMayor = 0
+        const productosUnicos = new Set(pedidos.map(p => p[1]))
+        for (const producto of productosUnicos) {
+            const conteo = pedidos.filter(p => p[1] == producto).length
+            if (conteo > conteoMayor) {
+                conteoMayor = conteo
+                masVendido = producto
+            }
+        }
+        return masVendido
+    }
 </script>
 </body>
 </html>
