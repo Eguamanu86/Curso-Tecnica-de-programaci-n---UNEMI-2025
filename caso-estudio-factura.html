@@ -367,34 +367,24 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="producto">Seleccionar Producto/Servicio</label>
-                    <select id="producto">
-                        <option value="">-- Seleccione un producto --</option>
-                        <option value="Sistema Web Personalizado|3500">Sistema Web Personalizado - $3,500</option>
-                        <option value="Licencia Software Empresarial|250">Licencia Software Empresarial - $250</option>
-                        <option value="Consultoría TI por hora|75">Consultoría TI por hora - $75</option>
-                        <option value="Soporte Técnico Mensual|450">Soporte Técnico Mensual - $450</option>
-                        <option value="Hosting Premium Anual|180">Hosting Premium Anual - $180</option>
-                        <option value="Capacitación por hora|95">Capacitación por hora - $95</option>
-                        <option value="Desarrollo Mobile App|5000">Desarrollo Mobile App - $5,000</option>
-                        <option value="Mantenimiento Web|300">Mantenimiento Web - $300</option>
-                        <option value="Seguridad Informática|800">Seguridad Informática - $800</option>
-                        <option value="Backup en la Nube|120">Backup en la Nube - $120</option>
+                    <select id="id-select-producto">
+                        <option value="">--Seleccione--</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="cantidad">Cantidad</label>
-                    <input type="number" id="cantidad" min="1" value="1">
+                    <input type="number" id="id-txt-cantidad" min="1" value="1">
                 </div>
                 <div class="form-group">
                     <label for="precio">Precio Unitario</label>
-                    <input type="text" id="precio" value="$0.00" readonly>
+                    <input type="text" id="id-txt-precio" value="$0.00" readonly>
                 </div>
                 <div class="form-group">
                     <label for="total">Total</label>
-                    <input type="text" id="total" value="$0.00" readonly>
+                    <input type="text" id="id-txt-total" value="$0.00" readonly>
                 </div>
                 <div class="form-group">
-                    <button class="btn-add">+ Agregar</button>
+                    <button class="btn-add" id="id-btn-agregar">+ Agregar</button>
                 </div>
             </div>
         </div>
@@ -403,9 +393,10 @@
         <div class="invoice-content">
             <!-- Tabla de artículos -->
             <div class="table-container">
-                <table class="items-table">
+                <table class="items-table" id="id-table-detalle">
                     <thead>
                         <tr>
+                            <th>Cod.</th>
                             <th>Descripción</th>
                             <th style="width: 60px;">Cant.</th>
                             <th style="width: 80px;">P. Unit.</th>
@@ -415,6 +406,7 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <td>0001</td>
                             <td>Sistema Web Personalizado</td>
                             <td>1</td>
                             <td>$3,500</td>
@@ -430,23 +422,68 @@
                 <h3>Resumen</h3>
                 <div class="total-row subtotal">
                     <span>Subtotal:</span>
-                    <span>$8,200.00</span>
+                    <span id="id-txt-subtotal">$8,200.00</span>
                 </div>
                 <div class="total-row tax">
                     <span>IVA (15%):</span>
-                    <span>$1,230.00</span>
+                    <span id="id-txt-iva">$1,230.00</span>
                 </div>
                 <div class="total-row">
                     <span>Descuento:</span>
-                    <span>-$150.00</span>
+                    <span id="id-txt-descuento">-$150.00</span>
                 </div>
                 <div class="total-row grand-total">
                     <span>TOTAL:</span>
-                    <span>$9,280.00</span>
+                    <span id="id-txt-total">$9,280.00</span>
                 </div>
             </div>
         </div>
 
     </div>
+
+    <script>
+        const productos = [
+           //cod  , precio , descripcion
+           //[0]    [1]   [2]
+           ["0001", 3500, "Sistema Web Personalizado"],
+           ["0002", 500, "Computador Core I7"],
+           ["0003", 200, "Monitor LG 20 pulgadas"],
+           ["0004", 300, "Telefono Celular Samsung"],
+           ["0005", 200, "Camara profesional Web."]
+        ]
+
+        const selectProducto = document.getElementById('id-select-producto')
+        const txtCantidad = document.getElementById('id-txt-cantidad')
+        const txtPrecio = document.getElementById('id-txt-precio')
+        const txtTotal = document.getElementById('id-txt-total')
+
+        fnCargarProductos()
+
+        selectProducto.addEventListener('change', (event)=>{
+            const precio = parseFloat(event.target.value)
+            const cantidad = parseFloat(txtCantidad.value)
+            txtPrecio.value = precio
+            txtTotal.value = precio * cantidad
+        })
+
+        function fnCargarProductos(){
+            for(let i in productos){
+                // Extraemos información del producto desde el Arreglo.
+                const codigo = productos[i][0]
+                const precio = productos[i][1]
+                const producto = productos[i][2]
+
+                //Creamos la etiqueta (elemento) option
+                const option = document.createElement('option')
+                // Agregamos los valores al elemento Option
+                option.value = precio
+                option.dataset.codigo = codigo
+                option.textContent = producto
+                // agregamos el elemento option a la lista desplegable Select
+                selectProducto.appendChild(option)
+            }
+        }
+
+    </script>
 </body>
 </html>
