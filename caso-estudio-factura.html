@@ -405,14 +405,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>0001</td>
-                            <td>Sistema Web Personalizado</td>
-                            <td>1</td>
-                            <td>$3,500</td>
-                            <td>$3,500</td>
-                            <td><button class="btn-remove">✕</button></td>
-                        </tr>
+                       <tr>
+                        <td colspan="6" style="text-align-last: center;">No hay productos en la factura</td>
+                       </tr>
                     </tbody>
                 </table>
             </div>
@@ -451,18 +446,29 @@
            ["0004", 300, "Telefono Celular Samsung"],
            ["0005", 200, "Camara profesional Web."]
         ]
+        const facturaDetalles =[]
+
 
         const selectProducto = document.getElementById('id-select-producto')
         const txtCantidad = document.getElementById('id-txt-cantidad')
         const txtPrecio = document.getElementById('id-txt-precio')
         const txtTotal = document.getElementById('id-txt-total')
+        const btnAgregar = document.getElementById('id-btn-agregar')
+        const tablaDetalle = document.querySelector('#id-table-detalle tbody')
 
         fnCargarProductos()
 
         selectProducto.addEventListener('change', (event)=>{
             const precio = parseFloat(event.target.value)
-            const cantidad = parseFloat(txtCantidad.value)
+            const cantidad = 1
             txtPrecio.value = precio
+            txtTotal.value = precio * cantidad
+            txtCantidad.focus()
+        })
+
+        txtCantidad.addEventListener('change', (event)=>{
+            const cantidad = parseFloat(event.target.value)
+            const precio = parseFloat(txtPrecio.value)
             txtTotal.value = precio * cantidad
         })
 
@@ -483,7 +489,6 @@
                 selectProducto.appendChild(option)
             }
         }
-
     </script>
 </body>
 </html>
