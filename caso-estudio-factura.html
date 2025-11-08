@@ -398,8 +398,8 @@
                         <tr>
                             <th>Cod.</th>
                             <th>Descripción</th>
-                            <th style="width: 60px;">Cant.</th>
                             <th style="width: 80px;">P. Unit.</th>
+                            <th style="width: 60px;">Cant.</th>
                             <th style="width: 80px;">Total</th>
                             <th style="width: 50px;">Acción</th>
                         </tr>
@@ -437,6 +437,8 @@
     </div>
 
     <script>
+         //               [0]         [1]        [2] ... N
+        // productos [ [producto1], [producto2], ...N ]
         const productos = [
            //cod  , precio , descripcion
            //[0]    [1]   [2]
@@ -446,9 +448,11 @@
            ["0004", 300, "Telefono Celular Samsung"],
            ["0005", 200, "Camara profesional Web."]
         ]
+
+        // Vector para guardar los detalles de la factura
         const facturaDetalles =[]
 
-
+        // Referencias a los controles del formulario
         const selectProducto = document.getElementById('id-select-producto')
         const txtCantidad = document.getElementById('id-txt-cantidad')
         const txtPrecio = document.getElementById('id-txt-precio')
@@ -458,24 +462,63 @@
 
         fnCargarProductos()
 
+        // Asignar eventos 'Chance' (Cambio) al control Lista desplegable
         selectProducto.addEventListener('change', (event)=>{
+            // Extraer el precio seleccionado de la lista desplegable
             const precio = parseFloat(event.target.value)
-            const cantidad = 1
+            const cantidad = 1 // por defecto
+
+            // Asignar valores a las cajas de texto
             txtPrecio.value = precio
             txtTotal.value = precio * cantidad
             txtCantidad.focus()
         })
 
+        // Asignar evento 'Change' (cambio) en la caja de texto Cantidad
         txtCantidad.addEventListener('change', (event)=>{
             const cantidad = parseFloat(event.target.value)
             const precio = parseFloat(txtPrecio.value)
             txtTotal.value = precio * cantidad
         })
 
+        btnAgregar.addEventListener('click', (event)=>{
+            const codigo = selectProducto.options[selectProducto.selectedIndex].dataset.codigo
+            const descripcion = selectProducto.options[selectProducto.selectedIndex].textContent
+            const cantidad = parseFloat(txtCantidad.value)
+            const precio = parseFloat(txtPrecio.value)
+            const total = parseFloat(txtTotal.value)
+
+            facturaDetalles.push([codigo, descripcion, precio, cantidad, total])
+            fnPresentarDetalleFacturas()
+
+        })
+
+        function fnPresentarDetalleFacturas(){
+
+            tablaDetalle.innerHTML = ''
+
+            for(let i in facturaDetalles){
+                const fila = document.createElement('tr')
+
+                for(let j in facturaDetalles[i]){
+                    const columna = document.createElement('td')
+                    columna.textContent = facturaDetalles[i][j]
+                    fila.appendChild(columna)
+                }
+                const celdaAccion = document.createElement('td')
+                const btnEliminar = document.createElement('button')
+                btnEliminar.className = 'btn-remove'
+                btnEliminar.textContent = 'x'
+                fila.appendChild(btnEliminar)
+
+                tablaDetalle.appendChild(fila)
+            }
+        }
+
         function fnCargarProductos(){
             for(let i in productos){
                 // Extraemos información del producto desde el Arreglo.
-                const codigo = productos[i][0]
+                const codigo = productos[i][0] //  i = indice del arreglo.
                 const precio = productos[i][1]
                 const producto = productos[i][2]
 
